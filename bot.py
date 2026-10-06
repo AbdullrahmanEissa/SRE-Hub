@@ -3,6 +3,8 @@ from discord.ext import commands
 import os
 import logging
 from dotenv import load_dotenv
+from aiohttp import web
+import asyncio
 
 # 1. إعداد نظام تتبع الأحداث (Logging) الاحترافي
 logging.basicConfig(
@@ -26,6 +28,24 @@ intents.message_content = True
 intents.members = True  # صلاحية قراءة الأعضاء (مهمة للترحيب وتوزيع الرتب)
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+# ==========================================
+# كود سيرفر الويب الوهمي لمنع Render من إيقاف البوت
+# ==========================================
+async def handle(request):
+    return web.Response(text="Bot is running 24/7!")
+
+app = web.Application()
+app.router.add_get('/', handle)
+
+async def start_web_server():
+    runner = web.AppRunner(app)
+    await runner.setup()
+    # Render بيستخدم بورت 10000 افتراضياً للخدمات المجانية
+    site = web.TCPSite(runner, '0.0.0.0', 10000)
+    await site.start()
+    logger.info("Dummy web server started on port 10000")
+# ==========================================
 
 # 4. هيكل البيانات (Configuration Structure)
 ROLES_CONFIG = [
@@ -84,6 +104,8 @@ EMOJI_TO_ROLE = {
 
 @bot.event
 async def on_ready():
+    # تشغيل سيرفر الويب الوهمي بالتوازي مع البوت
+    bot.loop.create_task(start_web_server())
     logger.info(f'System Online: Logged in as {bot.user.name} (ID: {bot.user.id})')
     logger.info('Awaiting deployment commands...')
 
