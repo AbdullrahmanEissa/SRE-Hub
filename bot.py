@@ -47,13 +47,14 @@ async def start_web_server():
     logger.info("Dummy web server started on port 10000")
 # ==========================================
 
-# 4. هيكل البيانات (Configuration Structure)
+# 4. هيكل البيانات (Configuration Structure) المحدث
 ROLES_CONFIG = [
     {"name": "👑・Pit Boss", "color": discord.Color.red(), "hoist": True, "permissions": discord.Permissions(administrator=True)},
     {"name": "🚨・Race Steward", "color": discord.Color.orange(), "hoist": True, "permissions": discord.Permissions(manage_messages=True, kick_members=True)},
     {"name": "🔴・Content Creator", "color": discord.Color.purple(), "hoist": True, "permissions": discord.Permissions.none()},
     {"name": "🏁・Sim Racer", "color": discord.Color.dark_blue(), "hoist": True, "permissions": discord.Permissions.none()},
     {"name": "🌵・Horizon Driver", "color": discord.Color.gold(), "hoist": True, "permissions": discord.Permissions.none()},
+    {"name": "🏎️・LMU Pilot", "color": discord.Color.light_grey(), "hoist": True, "permissions": discord.Permissions.none()}, # الرتبة الجديدة
     {"name": "🛞・Wheel User", "color": discord.Color.green(), "hoist": True, "permissions": discord.Permissions.none()},
     {"name": "🕹️・Controller User", "color": discord.Color.teal(), "hoist": True, "permissions": discord.Permissions.none()}
 ]
@@ -81,6 +82,16 @@ CHANNELS_CONFIG = {
         {"name": "⚙️・car-tunes", "type": "text"},
         {"name": "🚗・convoys-lfg", "type": "text"}
     ],
+    "⏱️ | LE MANS ULTIMATE": [ # القسم الجديد
+        {"name": "🏁・lmu-general", "type": "text"},
+        {"name": "⚙️・lmu-setups", "type": "text"}
+    ],
+    "🏆 | COMPETITIVE RACING": [ # القسم الجديد
+        {"name": "📢・league-news", "type": "text"},
+        {"name": "🏆・standings", "type": "text"},
+        {"name": "💬・league-chat", "type": "text"},
+        {"name": "🚨・stewards-office", "type": "text"}
+    ],
     "🕹️ | THE GARAGE": [
         {"name": "⚙️・wheel-settings", "type": "text"},
         {"name": "💻・pc-setups", "type": "text"}
@@ -89,6 +100,8 @@ CHANNELS_CONFIG = {
         {"name": "🔊 | Paddock Lounge", "type": "voice"},
         {"name": "🚗 | AC Drift Matsuri", "type": "voice"},
         {"name": "🌵 | FH Convoy", "type": "voice"},
+        {"name": "🏎️ | LMU Grid", "type": "voice"}, # روم LMU
+        {"name": "🏆 | Race Control", "type": "voice"}, # روم البطولات
         {"name": "🔴 | Streaming...", "type": "voice"}
     ]
 }
@@ -96,6 +109,7 @@ CHANNELS_CONFIG = {
 EMOJI_TO_ROLE = {
     "🏁": "🏁・Sim Racer",
     "🌵": "🌵・Horizon Driver",
+    "🏎️": "🏎️・LMU Pilot", # الإيموجي الجديد
     "🛞": "🛞・Wheel User",
     "🕹️": "🕹️・Controller User"
 }
@@ -238,7 +252,8 @@ async def send_roles_message(ctx):
             "عشان نقدر نتعرف عليك أكتر ونخصص تجربتك، يرجى اختيار الألعاب وأدوات التحكم من الإيموجيز تحت:\n\n"
             "**🎮 الألعاب المفضلة:**\n"
             "🏁 ➔ Assetto Corsa (Sim Racer)\n"
-            "🌵 ➔ Forza Horizon (Horizon Driver)\n\n"
+            "🌵 ➔ Forza Horizon (Horizon Driver)\n"
+            "🏎️ ➔ Le Mans Ultimate (LMU Pilot)\n\n"
             "**⚙️ أداة التحكم:**\n"
             "🛞 ➔ بيلعب بدركسون (Wheel User)\n"
             "🕹️ ➔ بيلعب بدراع (Controller User)"
